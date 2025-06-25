@@ -1,0 +1,27 @@
+[project]
+name = "daia"
+version = "0.1.0"
+description = "Agent for diabetes bolus calculation and management"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "certifi>=2025.6.15",
+    "fastapi[standard]>=0.115.13",
+    "langchain>=0.3.26",
+    "langchain-openai>=0.3.25",
+    "langgraph>=0.4.8",
+    "langgraph-checkpoint-postgres>=2.0.21",
+    "pandas>=2.3.0",
+    "pgvector>=0.4.1",
+    "psycopg2>=2.9.10",
+    "pydantic-settings>=2.10.0",
+    "sqlalchemy>=2.0.41",
+    "sqlmodel>=0.0.24",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "pytest>=8.4.1",
+    "python-dotenv>=1.1.0",
+]

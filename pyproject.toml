@@ -5,7 +5,6 @@ description = "Agent for diabetes bolus calculation and management"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "certifi>=2025.6.15",
     "fastapi[standard]>=0.115.13",
     "langchain>=0.3.26",
     "langchain-openai>=0.3.25",
@@ -21,6 +20,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "certifi>=2025.6.15",
     "ipykernel>=6.29.5",
     "pytest>=8.4.1",
     "python-dotenv>=1.1.0",

@@ -1,9 +1,8 @@
-"""settings object for the project, including secret env variables"""
+"""Settings object for the project, including secret env variables"""
 
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # all available models that support function calling
@@ -22,7 +21,7 @@ class DaiaSettings(BaseSettings):
     All variables must be set via .env file or environment variables
     """
 
-    OPENAI_API_KEY: SecretStr
+    OPENAI_API_KEY: str
     OPENAI_URL: str
     OPENAI_MODEL: _function_calling_model = "llama-3-3-70b-instruct"
     OPENAI_EMBEDDING_MODEL: _embedding_model = "gte-large"
@@ -40,4 +39,4 @@ class DaiaSettings(BaseSettings):
 @lru_cache
 def get_settings() -> DaiaSettings:
     """Singleton implementation of the settings object"""
-    return DaiaSettings() # type: ignore
+    return DaiaSettings()  # type: ignore

@@ -7,6 +7,7 @@ requires-python = ">=3.10"
 dependencies = [
     "fastapi[standard]>=0.115.13",
     "langchain>=0.3.26",
+    "langchain-litellm>=0.2.1",
     "langchain-openai>=0.3.25",
     "langgraph>=0.4.8",
     "langgraph-checkpoint-postgres>=2.0.21",
@@ -22,6 +23,7 @@ dependencies = [
 dev = [
     "certifi>=2025.6.15",
     "ipykernel>=6.29.5",
+    "pdoc3>=0.11.6",
     "pytest>=8.4.1",
     "python-dotenv>=1.1.0",
 ]

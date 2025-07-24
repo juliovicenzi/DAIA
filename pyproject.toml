@@ -11,10 +11,12 @@ dependencies = [
     "langchain-openai>=0.3.25",
     "langgraph>=0.4.8",
     "langgraph-checkpoint-postgres>=2.0.21",
+    "mlflow>=3.1.1",
     "pandas>=2.3.0",
     "pgvector>=0.4.1",
     "psycopg2>=2.9.10",
     "pydantic-settings>=2.10.0",
+    "ragas>=0.3.0",
     "sqlalchemy>=2.0.41",
     "sqlmodel>=0.0.24",
 ]

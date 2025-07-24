@@ -52,7 +52,7 @@ def search_food_information(
 
 
 @tool
-def meal_bolus_calculator(meal: Meal, insulin_to_carb_ratio: float) -> int:
+def calculate_meal_bolus(meal: Meal, insulin_to_carb_ratio: float) -> int:
     """Used to calculate the amount of insulin units required to bolus for a meal
     based on the nutrional information of the foods, and their respective quantities
 
@@ -65,6 +65,11 @@ def meal_bolus_calculator(meal: Meal, insulin_to_carb_ratio: float) -> int:
     Returns:
         A breakdown of the bolus calcualtion
     """
+    if insulin_to_carb_ratio <= 0:
+        raise ValueError("The insulin_to_carb_ratio must be greater than 0.")
+    # multiply the carbohydrates with the portion size,
+    # considering carbohydrates_g represents the amount in a 100g portion
+    # it is necessary to divide by 100
     total_carbohydrates = sum(
         (food.carbohydrates_g * food.portion_size_g / 100 for food in meal.foods)
     )
@@ -74,7 +79,7 @@ def meal_bolus_calculator(meal: Meal, insulin_to_carb_ratio: float) -> int:
 
 
 @tool
-def correction_bolus_calculator(
+def calculate_correction_bolus(
     current_blood_glucose: float,
     target_blood_glucose: float,
     insulin_sensitivity: float,
@@ -96,7 +101,46 @@ def correction_bolus_calculator(
     Returns:
         The number of units of insulin to take to correct the blood glucose level.
         A negative value indicates less units of insulin to take, or a meal recommendation.
+    Raises:
+        ValueError: if the sensitivity is less or equal to 0
     """
+    if insulin_sensitivity <= 0:
+        raise ValueError("The insulin sensitivity must be greater than 0.")
     return math.floor(
-        (target_blood_glucose - current_blood_glucose) / insulin_sensitivity
+        (current_blood_glucose - target_blood_glucose) / insulin_sensitivity
+    )
+
+
+@tool
+def caculate_complete_bolus(
+    meal: Meal,
+    current_blood_glucose: float,
+    target_blood_glucose: float,
+    insulin_sensitivity: float,
+    insulin_to_carb_ratio: float,
+) -> int:
+    """Calculate the amount of units of insulin to take for a meal
+    based on the nutrional information of the foods, and their respective quantities.
+
+    This function should only be called if all the information is available.
+
+    Args:
+        meal: The meal comprised of foods with their nutrional information and portions
+        current_blood_glucose: current blood glucose level
+        target_blood_glucose: target blood glucose level
+        insulin_sensitivity: the user's sensitivity to insulin,
+            the amound of blood glucose a unit of insulin decreases, in mg/dL units
+        insulin_to_carb_ratio: The ratio of units of insulin to units of carbohydrates
+    Returns:
+        The number of units of insulin to take for a meal
+    """
+
+    return calculate_correction_bolus.invoke(
+        input={
+            "current_blood_glucose": current_blood_glucose,
+            "target_blood_glucose": target_blood_glucose,
+            "insulin_sensitivity": insulin_sensitivity,
+        }
+    ) + calculate_meal_bolus.invoke(
+        input={"meal": meal, "insulin_to_carb_ratio": insulin_to_carb_ratio}
     )

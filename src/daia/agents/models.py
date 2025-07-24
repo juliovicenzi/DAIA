@@ -3,7 +3,6 @@
 from functools import lru_cache
 
 from langchain_openai import ChatOpenAI
-from langchain_openai.embeddings import OpenAIEmbeddings
 from openai import OpenAI
 from pydantic import SecretStr
 
@@ -61,6 +60,7 @@ def embed_documents(documents: list[str]) -> list[list[float]]:
     embeddings = model.embeddings.create(
         model=settings.OPENAI_EMBEDDING_MODEL, input=documents
     ).data
+
     # Unpack it, to return a list[list[float]]
     return [emb.embedding for emb in embeddings]
 

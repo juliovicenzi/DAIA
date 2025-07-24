@@ -1,18 +1,19 @@
 from typing import Any
 
 import fastapi
+from fastapi.responses import RedirectResponse
 from langchain_core.messages import BaseMessage
 
-from daia.agents.agent import get_daia_graph, invoke_agent
+from daia.agents.agent import invoke_agent
 from daia.agents.tools import search_food_information
 from daia.daia_db.db_model import FoodNutrientsSimilarity
 
 app = fastapi.FastAPI(title="DAIA")
 
 
-@app.get("/")
-async def hello() -> dict[str, str]:
-    return {"hello": "world"}
+@app.get("/", include_in_schema=False)
+async def redirect_docs() -> RedirectResponse:
+    return RedirectResponse("/docs")
 
 
 @app.get("/v1/search_similarity", response_model=list[FoodNutrientsSimilarity])
@@ -32,6 +33,6 @@ def food_search(food_name: str) -> Any:
 
 
 @app.get("/v1/agent")
-def prompt_agent(prompt: str, thread_id: int) -> list[BaseMessage]:
-    """Prompts the agent with a prompt"""
+def prompt_agent(prompt: str, thread_id: str) -> list[BaseMessage]:
+    """Prompts the agent"""
     return invoke_agent(prompt, thread_id=thread_id)["messages"]

@@ -8,7 +8,12 @@ from langgraph.graph.graph import CompiledGraph
 from langgraph.prebuilt import create_react_agent
 
 from daia.agents.models import get_chat_model
-from daia.agents.tools import search_food_information
+from daia.agents.tools import (
+    caculate_complete_bolus,
+    calculate_correction_bolus,
+    calculate_meal_bolus,
+    search_food_information,
+)
 from daia.daia_db.db_model import get_pg_url
 
 
@@ -22,7 +27,12 @@ def get_daia_graph(checkpointer: PostgresSaver) -> CompiledGraph:
         The DAIA graph
     """
     llm = get_chat_model()
-    tools = [search_food_information]
+    tools = [
+        search_food_information,
+        calculate_meal_bolus,
+        calculate_correction_bolus,
+        caculate_complete_bolus,
+    ]
 
     graph = create_react_agent(
         model=llm,

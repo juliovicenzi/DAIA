@@ -84,7 +84,7 @@ def parse_args():
         "-d",
         type=check_csv,
         required=True,
-        help="Path to the data file csv file",
+        help="Path to the data csv file",
     )
     parser.add_argument(
         "-e",
